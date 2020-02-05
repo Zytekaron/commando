@@ -106,9 +106,6 @@ public class Commando extends ListenerAdapter {
     
     private Command getCommand(String name) {
         String query = mappings.getOrDefault(name, name);
-        System.out.println("!"+query+"!");
-        System.out.println(commands.get(query));
-        System.out.println(String.join(" ", commands.keySet()));
         return commands.get(query.toLowerCase());
     }
     
