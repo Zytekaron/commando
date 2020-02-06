@@ -5,8 +5,6 @@ plugins {
 
 apply plugin: 'maven'
 
-apply plugin: 'com.github.johnrengelman.shadow'
-
 group 'tk.zytekaron.commando'
 version '1.0.0'
 
