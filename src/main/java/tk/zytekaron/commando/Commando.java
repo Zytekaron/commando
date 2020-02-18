@@ -22,7 +22,6 @@ public class Commando extends ListenerAdapter {
     private JDA jda;
     private boolean mentionPrefix = true;
     private int updateTime = 30;
-    
     public Commando(JDA jda) {
         this.jda = jda;
     }
@@ -110,7 +109,7 @@ public class Commando extends ListenerAdapter {
         }
     }
     
-    private Command getCommand(String name) {
+    public Command getCommand(String name) {
         String query = mappings.getOrDefault(name, name);
         return commands.get(query.toLowerCase());
     }
@@ -123,6 +122,14 @@ public class Commando extends ListenerAdapter {
         }
     }
     
+    public Map<String, Command> getCommands() {
+        return commands;
+    }
+    
+    public Map<String, String> getMappings() {
+        return mappings;
+    }
+    
     public void useMentionPrefix(boolean useMentionPrefix) {
         this.mentionPrefix = useMentionPrefix;
     }
@@ -130,7 +137,6 @@ public class Commando extends ListenerAdapter {
     public void setUpdateTime(int seconds) {
         this.updateTime = seconds;
     }
-    
     
     public void setCommandPredicate(BiPredicate<Message, Command> predicate) {
         this.commandPredicate = predicate;
