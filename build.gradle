@@ -6,9 +6,9 @@ plugins {
 apply plugin: 'maven'
 
 group 'tk.zytekaron.commando'
-version '1.0.3'
+version '1.0.4'
 
-sourceCompatibility = 1.9
+sourceCompatibility = 1.11
 
 repositories {
     jcenter()

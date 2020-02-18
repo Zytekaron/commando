@@ -33,7 +33,11 @@ public class Main {
         // Whether or not to run this command
         // Useful for blacklists, ratelimits, or similar systems
         // Default: __ -> true
-        commando.setCommandPredicate(message -> !blacklist.contains(message.getAuthor().getIdLong()));
+        commando.setCommandPredicate((message, command) -> {
+            if (blacklist.contains(message.getAuthor().getIdLong())) return false;
+            if (blacklist.contains(message.getGuild().getIdLong())) return false;
+            return true;
+        });
         
         // Suppliers for prefixes (in order) given Message context
         // Recommended to put database operations at the end

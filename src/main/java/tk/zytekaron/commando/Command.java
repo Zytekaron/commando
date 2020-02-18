@@ -13,8 +13,8 @@ public abstract class Command {
     private List<Permission> permissions = new ArrayList<>();
     private boolean guildOnly = false;
     
-    public void execute(Message message, String prefix, String command, List<String> args) {
-        CommandContext context = new CommandContext(message, prefix, command, args);
+    public void execute(Commando commando, Message message, String prefix, String command, List<String> args) {
+        CommandContext context = new CommandContext(commando, message, prefix, command, args);
         if (!message.isFromGuild() && guildOnly) {
             noDirectMessage(context);
             return;

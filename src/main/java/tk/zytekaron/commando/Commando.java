@@ -11,17 +11,17 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 public class Commando extends ListenerAdapter {
     private Map<String, Command> commands = new HashMap<>();
     private Map<String, String> mappings = new HashMap<>();
+    private PrefixSupplier prefixSupplier = message -> List.of(() -> "!");
+    private BiPredicate<Message, Command> commandPredicate = null;
     private JDA jda;
     private boolean mentionPrefix = true;
     private int updateTime = 30;
-    private Predicate<Message> commandPredicate = __ -> true;
-    private PrefixSupplier prefixSupplier = message -> List.of(() -> "!");
     
     public Commando(JDA jda) {
         this.jda = jda;
@@ -38,8 +38,7 @@ public class Commando extends ListenerAdapter {
         commands.put(name, command);
         for (String alias : command.getAliases()) {
             if (mappings.containsKey(alias)) {
-                throw new CommandoException("Duplicate command alias '" + alias + "'' " +
-                        "(found in '" + mappings.get(alias) + "' and '" + name + "'");
+                throw new CommandoException("Duplicate command alias '" + alias + "' (found in '" + mappings.get(alias) + "' and '" + name + "'");
             }
             mappings.put(alias, name);
         }
@@ -67,7 +66,6 @@ public class Commando extends ListenerAdapter {
         } else {
             return;
         }
-        if (!commandPredicate.test(message)) return;
         execute(message);
     }
     
@@ -95,7 +93,15 @@ public class Commando extends ListenerAdapter {
 
                 Command cmd = getCommand(command);
                 if (cmd != null) {
-                    cmd.execute(message, prefix, command, args);
+                    if (commandPredicate != null && !commandPredicate.test(message, cmd)) {
+                        continue;
+                    }
+                    // fixme actually make permissions useful
+                    try {
+                        cmd.execute(this, message, prefix, command, args);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 }
             } catch (Exception e) {
@@ -125,7 +131,8 @@ public class Commando extends ListenerAdapter {
         this.updateTime = seconds;
     }
     
-    public void setCommandPredicate(Predicate<Message> predicate) {
+    
+    public void setCommandPredicate(BiPredicate<Message, Command> predicate) {
         this.commandPredicate = predicate;
     }
     
