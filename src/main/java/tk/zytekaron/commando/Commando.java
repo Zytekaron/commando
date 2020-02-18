@@ -22,6 +22,7 @@ public class Commando extends ListenerAdapter {
     private JDA jda;
     private boolean mentionPrefix = true;
     private int updateTime = 30;
+    
     public Commando(JDA jda) {
         this.jda = jda;
     }
