@@ -9,7 +9,11 @@ import java.util.List;
 
 public abstract class Command {
     private String name;
+    private String description;
+    private String usage;
+    
     private List<String> aliases = new ArrayList<>();
+    
     private List<Permission> permissions = new ArrayList<>();
     private boolean guildOnly = false;
     
@@ -50,6 +54,22 @@ public abstract class Command {
     
     protected void setName(String name) {
         this.name = name.toLowerCase();
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    protected void setDescription(String description) {
+        this.description = description;
+    }
+    
+    public String getUsage() {
+        return usage;
+    }
+    
+    protected void setUsage(String usage) {
+        this.usage = usage;
     }
     
     public List<String> getAliases() {
