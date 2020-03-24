@@ -49,10 +49,9 @@ public class Main {
             return prefixes;
         });
         // commando.setPrefixSupplier(message -> List.of(() -> ".")); for a single prefix
-        
-        // Enable the mention prefix (@Bot#1234 help)
-        // Default: true
-        commando.useMentionPrefix(true);
+    
+        // Set a fallback handler for non-command messages
+        commando.setFallback(message -> {});
         
         // Message updates within this many seconds will also trigger commands
         // Default: 30
@@ -63,6 +62,6 @@ public class Main {
         commando.setEnabled(true);
         
         // Remove a specific command
-        commando.unregisterCommand("n/a");
+        commando.unregisterCommand("ping");
     }
 }

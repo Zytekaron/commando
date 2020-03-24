@@ -12,6 +12,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Commando extends ListenerAdapter {
@@ -19,8 +20,8 @@ public class Commando extends ListenerAdapter {
     private Map<String, String> mappings = new HashMap<>();
     private PrefixSupplier prefixSupplier = message -> List.of(() -> "!");
     private BiPredicate<Message, Command> commandPredicate = null;
+    private Consumer<Message> fallback;
     private JDA jda;
-    private boolean mentionPrefix = true;
     private int updateTime = 30;
     
     public Commando(JDA jda) {
@@ -71,16 +72,10 @@ public class Commando extends ListenerAdapter {
     
     private void execute(Message message) {
         if (message.getAuthor().isBot()) return;
-        if (message.getContentRaw().equals("")) return;
+        if (message.getContentRaw().isEmpty()) return;
         
-        List<Supplier<String>> suppliers = new ArrayList<>();
-        if (mentionPrefix) {
-            suppliers.add(() -> "<@" + jda.getSelfUser().getId() + ">");
-            suppliers.add(() -> "<@!" + jda.getSelfUser().getId() + ">");
-        }
-        suppliers.addAll(prefixSupplier.getPrefixes(message));
-        
-        for (Supplier<String> supplier : suppliers) {
+        boolean success = false;
+        for (Supplier<String> supplier : prefixSupplier.getPrefixes(message)) {
             try {
                 String prefix = supplier.get();
                 if (prefix == null) continue;
@@ -96,17 +91,20 @@ public class Commando extends ListenerAdapter {
                     if (commandPredicate != null && !commandPredicate.test(message, cmd)) {
                         continue;
                     }
-                    // fixme actually make permissions useful
                     try {
                         cmd.execute(this, message, prefix, command, args);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    success = true;
                     break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if (!success && fallback != null) {
+            fallback.accept(message);
         }
     }
     
@@ -131,19 +129,19 @@ public class Commando extends ListenerAdapter {
         return mappings;
     }
     
-    public void useMentionPrefix(boolean useMentionPrefix) {
-        this.mentionPrefix = useMentionPrefix;
-    }
-    
     public void setUpdateTime(int seconds) {
         this.updateTime = seconds;
+    }
+    
+    public void setPrefixSupplier(PrefixSupplier supplier) {
+        this.prefixSupplier = supplier;
     }
     
     public void setCommandPredicate(BiPredicate<Message, Command> predicate) {
         this.commandPredicate = predicate;
     }
     
-    public void setPrefixSupplier(PrefixSupplier supplier) {
-        this.prefixSupplier = supplier;
+    public void setFallback(Consumer<Message> fallback) {
+        this.fallback = fallback;
     }
 }
