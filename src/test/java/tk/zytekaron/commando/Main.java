@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class Main {
+    private static final List<Long> blacklist = List.of(123L, 456L);
     private static JDA jda;
-    private static List<Long> blacklist = List.of();
     
     public static void main(String[] args) {
         try {
@@ -50,10 +50,27 @@ public class Main {
         });
         // commando.setPrefixSupplier(message -> List.of(() -> ".")); for a single prefix
     
-        // Set a fallback handler for non-command messages
+        // Set a command pre-processing function (called before the command is executed)
+        // Default: none
+        commando.setCommandPreProcess(message -> {
+            // Make sure there are database entries for the author
+            // Set up any data that is required in more than one command
+        });
+    
+        // Set a command post-processing function (called after the command is executed)
+        // Default: none
+        commando.setCommandPostProcess(message -> {
+            // Whatever you need to do after the command has been processed
+        });
+        
+        // Set a fallback handler for messages that
+        // - don't start with a prefix / contain a command
+        // - don't pass the CommandPredicate
+        // Default: none
         commando.setFallback(message -> {});
         
         // Message updates within this many seconds will also trigger commands
+        // Set to 0 to disable
         // Default: 30
         commando.setUpdateTime(30);
         

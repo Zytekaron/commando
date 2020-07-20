@@ -11,9 +11,7 @@ public abstract class Command {
     private String name;
     private String description;
     private String usage;
-    
     private List<String> aliases = new ArrayList<>();
-    
     private List<Permission> permissions = new ArrayList<>();
     private boolean guildOnly = false;
     

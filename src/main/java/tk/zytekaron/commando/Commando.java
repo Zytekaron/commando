@@ -16,12 +16,14 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Commando extends ListenerAdapter {
-    private Map<String, Command> commands = new HashMap<>();
-    private Map<String, String> mappings = new HashMap<>();
+    private final Map<String, Command> commands = new HashMap<>();
+    private final Map<String, String> mappings = new HashMap<>();
     private PrefixSupplier prefixSupplier = message -> List.of(() -> "!");
     private BiPredicate<Message, Command> commandPredicate = null;
+    private Consumer<Message> commandPreProcess = null;
+    private Consumer<Message> commandPostProcess = null;
     private Consumer<Message> fallback;
-    private JDA jda;
+    private final JDA jda;
     private int updateTime = 30;
     
     public Commando(JDA jda) {
@@ -60,6 +62,7 @@ public class Commando extends ListenerAdapter {
         if (event instanceof MessageReceivedEvent) {
             message = ((MessageReceivedEvent) event).getMessage();
         } else if (event instanceof MessageUpdateEvent) {
+            if (updateTime == 0) return;
             message = ((MessageUpdateEvent) event).getMessage();
             OffsetDateTime now = OffsetDateTime.now();
             Duration diff = Duration.between(message.getTimeCreated(), now);
@@ -74,36 +77,50 @@ public class Commando extends ListenerAdapter {
         if (message.getAuthor().isBot()) return;
         if (message.getContentRaw().isEmpty()) return;
         
-        boolean success = false;
         for (Supplier<String> supplier : prefixSupplier.getPrefixes(message)) {
             try {
+                // Get a prefix
                 String prefix = supplier.get();
                 if (prefix == null) continue;
+                // Continue checking if the prefix isn't here
                 if (!message.getContentRaw().startsWith(prefix.toLowerCase())) continue;
 
+                // Prepare data
                 String content = message.getContentRaw().substring(prefix.length()).trim();
                 List<String> args = new ArrayList<>(Arrays.asList(content.split(" ")));
                 String command = args.get(0);
                 args.remove(0);
 
+                // Fetch the command
                 Command cmd = getCommand(command);
                 if (cmd != null) {
+                    // Check if this command can be used
                     if (commandPredicate != null && !commandPredicate.test(message, cmd)) {
-                        continue;
+                        // If not, break the loop and continue to fallback
+                        break;
                     }
+                    // Call the pre-processing function, if one exists
+                    if (commandPreProcess != null) {
+                        commandPreProcess.accept(message);
+                    }
+                    // Attempt to run the command
                     try {
                         cmd.execute(this, message, prefix, command, args);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    success = true;
+                    // Call the post-processing function, if one exists
+                    if (commandPostProcess != null) {
+                        commandPostProcess.accept(message);
+                    }
                     break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        if (!success && fallback != null) {
+        // If there was no command, process this message normally
+        if (fallback != null) {
             fallback.accept(message);
         }
     }
@@ -139,6 +156,14 @@ public class Commando extends ListenerAdapter {
     
     public void setCommandPredicate(BiPredicate<Message, Command> predicate) {
         this.commandPredicate = predicate;
+    }
+    
+    public void setCommandPreProcess(Consumer<Message> commandPreProcess) {
+        this.commandPreProcess = commandPreProcess;
+    }
+    
+    public void setCommandPostProcess(Consumer<Message> commandPostProcess) {
+        this.commandPostProcess = commandPostProcess;
     }
     
     public void setFallback(Consumer<Message> fallback) {
