@@ -1,11 +1,12 @@
 # commando
-### Version: 1.4.0
+### Version: 1.5.0
 ##### Requires Java 11+
-[![](https://jitpack.io/v/tk.zytekaron/commando.svg)](https://jitpack.io/#tk.zytekaron/commando)
+##### base package renamed to `com.zytekaron` as of 1.5.0
+[![](https://jitpack.io/v/com.zytekaron/commando.svg)](https://jitpack.io/#com.zytekaron/commando)
 
 This is the command handler I use in my own JDA bots. Feel free to use it.
 
-<br/>
+<br>
 
 ## Installation
 
@@ -17,7 +18,7 @@ repositories {
 ```
 ```groovy
 depencencies {
-    compile 'com.github.zytekaron:commando:1.4.0'
+    compile 'com.zytekaron:commando:1.5.0'
 }
 ```
 
@@ -34,23 +35,23 @@ depencencies {
 ```xml
 <dependencies>
     <dependency>
-        <groupId>com.github.zytekaron</groupId>
+        <groupId>com.zytekaron</groupId>
         <artifactId>commando</artifactId>
-        <version>1.4.0</version>
+        <version>1.5.0</version>
     </dependency>
 </dependencies>
 ```
 
-<br/>
+<br>
 
 ## Usage Examples
-[Main.java](src/test/java/tk/zytekaron/commando/Main.java)
+[Main.java](src/test/java/com/zytekaron/commando/Main.java)
 <br>
-[PingCommand.java](src/test/java/tk/zytekaron/commando/commands/PingCommand.java)
+[PingCommand.java](src/test/java/com/zytekaron/commando/commands/PingCommand.java)
 <br>
-[EvalCommand.java](src/test/java/tk/zytekaron/commando/commands/EvalCommand.java)
+[EvalCommand.java](src/test/java/com/zytekaron/commando/commands/EvalCommand.java)
 
-<br/>
+<br>
 
 ## License
 <b>commando</b> is licensed under the [GNU Lesser General Public License Version 3](https://github.com/Zytekaron/commando/blob/master/LICENSE)

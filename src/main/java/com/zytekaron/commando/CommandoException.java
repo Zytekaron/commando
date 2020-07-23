@@ -1,4 +1,4 @@
-package tk.zytekaron.commando;
+package com.zytekaron.commando;
 
 public class CommandoException extends RuntimeException {
     

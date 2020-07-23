@@ -1,4 +1,4 @@
-package tk.zytekaron.commando;
+package com.zytekaron.commando;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;

@@ -1,10 +1,10 @@
-package tk.zytekaron.commando.commands;
+package com.zytekaron.commando.commands;
 
+import com.zytekaron.commando.Command;
+import com.zytekaron.commando.CommandContext;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import tk.zytekaron.commando.Command;
-import tk.zytekaron.commando.CommandContext;
 
 public class PingCommand extends Command {
     

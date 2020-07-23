@@ -5,8 +5,8 @@ plugins {
 
 apply plugin: 'maven'
 
-group 'tk.zytekaron.commando'
-version '1.4.0'
+group 'com.zytekaron.commando'
+version '1.5.0'
 
 sourceCompatibility = 1.11
 

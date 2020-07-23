@@ -1,9 +1,9 @@
-package tk.zytekaron.commando;
+package com.zytekaron.commando;
 
+import com.zytekaron.commando.commands.EvalCommand;
+import com.zytekaron.commando.commands.PingCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import tk.zytekaron.commando.commands.EvalCommand;
-import tk.zytekaron.commando.commands.PingCommand;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
