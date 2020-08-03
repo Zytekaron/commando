@@ -113,7 +113,8 @@ public class Commando extends ListenerAdapter {
                     if (commandPostProcess != null) {
                         commandPostProcess.accept(message);
                     }
-                    break;
+                    // Return, so the fallback isn't called once the command is run
+                    return;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
