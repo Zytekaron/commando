@@ -51,7 +51,7 @@ public class EvalCommand extends Command {
         } catch (Exception e) {
             e.printStackTrace();
             String stack = Arrays.stream(e.getStackTrace()).toString();
-            stack = stack.substring(0, 1985);
+            stack = stack.substring(0, Math.min(stack.length(), 1985));
             String text = "```groovy\n" + stack + "\n```";
             message.getChannel().sendMessage(text).submit();
         }

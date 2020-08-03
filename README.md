@@ -1,5 +1,5 @@
 # commando
-### Version: 1.5.0
+### Version: 1.5.1
 ##### Requires Java 11+
 ##### base package renamed to `com.zytekaron` as of 1.5.0
 [![](https://jitpack.io/v/com.zytekaron/commando.svg)](https://jitpack.io/#com.zytekaron/commando)
@@ -18,7 +18,7 @@ repositories {
 ```
 ```groovy
 depencencies {
-    compile 'com.zytekaron:commando:1.5.0'
+    compile 'com.zytekaron:commando:1.5.1'
 }
 ```
 
@@ -37,7 +37,7 @@ depencencies {
     <dependency>
         <groupId>com.zytekaron</groupId>
         <artifactId>commando</artifactId>
-        <version>1.5.0</version>
+        <version>1.5.1</version>
     </dependency>
 </dependencies>
 ```
