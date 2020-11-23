@@ -17,7 +17,7 @@ public abstract class Command {
     
     public void execute(Commando commando, Message message, String prefix, String command, List<String> args) {
         CommandContext context = new CommandContext(commando, message, prefix, command, args);
-        if (!message.isFromGuild() && guildOnly) {
+        if (guildOnly && !message.isFromGuild()) {
             noDirectMessage(context);
             return;
         }

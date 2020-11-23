@@ -87,9 +87,8 @@ public class Commando extends ListenerAdapter {
 
                 // Prepare data
                 String content = message.getContentRaw().substring(prefix.length()).trim();
-                List<String> args = new ArrayList<>(Arrays.asList(content.split(" ")));
-                String command = args.get(0);
-                args.remove(0);
+                List<String> args = new ArrayList<>(Arrays.asList(content.split(" +")));
+                String command = args.remove(0).toLowerCase();
 
                 // Fetch the command
                 Command cmd = getCommand(command);
@@ -120,6 +119,7 @@ public class Commando extends ListenerAdapter {
                 e.printStackTrace();
             }
         }
+
         // If there was no command, process this message normally
         if (fallback != null) {
             fallback.accept(message);
