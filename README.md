@@ -17,7 +17,7 @@ repositories {
 }
 ```
 ```groovy
-depencencies {
+dependencies {
     compile 'com.zytekaron:commando:1.5.1'
 }
 ```
